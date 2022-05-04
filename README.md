@@ -71,7 +71,7 @@ urlpatterns = [
 ]
 ```
 
-### create_initialization.py
+### create_initialization.py (Subscribe API)
 https://help.paycom.uz/uz/initsializatsiya-platezhey/otpravka-cheka-po-metodu-get
 ```python
 from paycomuz import Paycom
