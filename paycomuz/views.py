@@ -147,8 +147,8 @@ class MerchantAPIView(APIView):
         except Transaction.DoesNotExist:
             self.reply = dict(error=dict(
                 id=request_id,
-                code=TRANSACTION_NOT_FOUND,
-                message=TRANSACTION_NOT_FOUND_MESSAGE
+                code=TRANSACTION_NOT_FOND,
+                message=TRANSACTION_NOT_FOND_MESSAGE
             ))
 
     def check_transaction(self, validated_data):
@@ -164,8 +164,8 @@ class MerchantAPIView(APIView):
         except Transaction.DoesNotExist:
             self.reply = dict(error=dict(
                 id=request_id,
-                code=TRANSACTION_NOT_FOUND,
-                message=TRANSACTION_NOT_FOUND_MESSAGE
+                code=TRANSACTION_NOT_FOND,
+                message=TRANSACTION_NOT_FOND_MESSAGE
             ))
 
     def cancel_transaction(self, validated_data):
@@ -193,8 +193,8 @@ class MerchantAPIView(APIView):
         except Transaction.DoesNotExist:
             self.reply = dict(error=dict(
                 id=request_id,
-                code=TRANSACTION_NOT_FOUND,
-                message=TRANSACTION_NOT_FOUND_MESSAGE
+                code=TRANSACTION_NOT_FOND,
+                message=TRANSACTION_NOT_FOND_MESSAGE
             ))
 
     def order_found(self, validated_data):
