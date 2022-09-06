@@ -59,10 +59,10 @@ class MerchantAPIView(APIView):
         """
         >>> self.check_perform_transaction(validated_data)
         """
-        assert self.VALIDATE_CLASS != None
+        assert self.VALIDATE_CLASS is not None
         validate_class: Paycom = self.VALIDATE_CLASS()
         result: int = validate_class.check_order(**validated_data['params'])
-        assert result != None
+        assert result is not None
         self.REPLY_RESPONSE[result](validated_data)
 
     def create_transaction(self, validated_data):
