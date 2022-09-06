@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 
 class Transaction(models.Model):
@@ -24,7 +23,7 @@ class Transaction(models.Model):
     cancel_datetime = models.CharField(null=True, max_length=255)
     created_datetime = models.CharField(null=True, max_length=255)
     reason = models.IntegerField(null=True)
-    receivers = JSONField(null=True, blank=True)
+    receivers = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.id}"
