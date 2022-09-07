@@ -5,6 +5,7 @@ from rest_framework import serializers
 # django
 from datetime import datetime
 from django.conf import settings
+import json
 
 # project
 from .models import Transaction
@@ -65,7 +66,7 @@ class MerchantAPIView(APIView):
         assert result is not None
         self.REPLY_RESPONSE[result](validated_data)
 
-    def create_transaction(self, validated_data):
+    def create_transaction(self, validated_data, order):
         """
         >>> self.create_transaction(validated_data)
         """
@@ -88,7 +89,8 @@ class MerchantAPIView(APIView):
                 self.reply = dict(result=dict(
                     create_time=int(transaction.created_datetime),
                     transaction=str(transaction.id),
-                    state=CREATE_TRANSACTION
+                    state=CREATE_TRANSACTION,
+                    receivers=transaction.receivers
                 ))
             else:
                 self.reply = dict(error=dict(
@@ -97,6 +99,26 @@ class MerchantAPIView(APIView):
                     message=ORDER_NOT_FOND_MESSAGE
                 ))
         else:
+            receivers = [dict(
+                id=settings.PAYCOM_SETTINGS["KASSA_ID"],
+                amount=0)]
+            for item in order.items.all():
+                if item.is_product:
+                    if not item.product.brand.merchant:
+                        raise serializers.ValidationError("This brand is not registered in merchant system!")
+                    receivers.append(dict(
+                        id=item.product.brand.merchant,
+                        amount=item.product.price * item.quantity * (100 - 5)))
+                    if not order.promoCode:
+                        receivers[0]["amount"] += item.product.price * item.quantity * (100 - 95)
+                else:
+                    if not item.composite.brand.merchant:
+                        raise serializers.ValidationError("This brand is not registered in merchant system!")
+                    receivers.append(dict(
+                        id=item.composite.brand.merchant,
+                        amount=item.composite.price * item.quantity * (100 - 5)))
+                    if not order.promoCode:
+                        receivers[0]["amount"] += item.composite.price * item.quantity * (100 - 95)
             current_time = datetime.now()
             current_time_to_string = int(round(current_time.timestamp()) * 1000)
             obj = Transaction.objects.create(
@@ -105,12 +127,14 @@ class MerchantAPIView(APIView):
                 amount=validated_data['params']['amount'] / 100,
                 order_key=validated_data['params']['account'][self.ORDER_KEY],
                 state=CREATE_TRANSACTION,
-                created_datetime=current_time_to_string
+                created_datetime=current_time_to_string,
+                receivers=json.dumps(receivers)
             )
             self.reply = dict(result=dict(
                 create_time=current_time_to_string,
                 transaction=str(obj.id),
-                state=CREATE_TRANSACTION
+                state=CREATE_TRANSACTION,
+                receivers=obj.receivers
             ))
 
     def perform_transaction(self, validated_data):
