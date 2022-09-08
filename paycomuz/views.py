@@ -101,7 +101,7 @@ class MerchantAPIView(APIView):
         else:
             receivers = [dict(
                 id=settings.PAYCOM_SETTINGS["KASSA_ID"],
-                amount=0)]
+                amount=order.deliveryCost * 100)]
             for item in order.items.all():
                 if item.is_product:
                     if not item.product.brand.merchant:
