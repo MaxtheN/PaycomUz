@@ -51,12 +51,12 @@ class MerchantAPIView(APIView):
         serializer = PaycomOperationSerialzer(data=request.data, many=False)
         serializer.is_valid(raise_exception=True)
         method = serializer.validated_data['method']
-        self.METHODS[method](serializer.validated_data)
+        self.METHODS[method](serializer.validated_data, order=None)
 
         assert self.reply != None
         return Response(self.reply)
 
-    def check_perform_transaction(self, validated_data):
+    def check_perform_transaction(self, validated_data, order):
         """
         >>> self.check_perform_transaction(validated_data)
         """
@@ -137,7 +137,7 @@ class MerchantAPIView(APIView):
                 receivers=obj.receivers
             ))
 
-    def perform_transaction(self, validated_data):
+    def perform_transaction(self, validated_data, order):
         """
         >>> self.perform_transaction(validated_data)
         """
@@ -175,7 +175,7 @@ class MerchantAPIView(APIView):
                 message=TRANSACTION_NOT_FOND_MESSAGE
             ))
 
-    def check_transaction(self, validated_data):
+    def check_transaction(self, validated_data, order):
         """
         >>> self.check_transaction(validated_data)
         """
@@ -192,7 +192,7 @@ class MerchantAPIView(APIView):
                 message=TRANSACTION_NOT_FOND_MESSAGE
             ))
 
-    def cancel_transaction(self, validated_data):
+    def cancel_transaction(self, validated_data, order):
         id = validated_data['params']['id']
         reason = validated_data['params']['reason']
         request_id = validated_data['id']
