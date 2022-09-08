@@ -90,7 +90,7 @@ class MerchantAPIView(APIView):
                     create_time=int(transaction.created_datetime),
                     transaction=str(transaction.id),
                     state=CREATE_TRANSACTION,
-                    receivers=transaction.receivers
+                    receivers=json.loads(transaction.receivers)
                 ))
             else:
                 self.reply = dict(error=dict(
