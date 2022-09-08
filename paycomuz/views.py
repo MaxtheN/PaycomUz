@@ -134,7 +134,7 @@ class MerchantAPIView(APIView):
                 create_time=current_time_to_string,
                 transaction=str(obj.id),
                 state=CREATE_TRANSACTION,
-                receivers=obj.receivers
+                receivers=json.loads(obj.receivers)
             ))
 
     def perform_transaction(self, validated_data, order):
