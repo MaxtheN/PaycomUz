@@ -11,12 +11,12 @@ PERFORM_CANCELED_CODE = -2
 ORDER_NOT_FOND_MESSAGE = {
     "uz": "Buyurtma topilmadi",
     "ru": "Заказ не найден",
-    "en": "Order not fond"
+    "en": "Order not found"
 }
 TRANSACTION_NOT_FOND_MESSAGE = {
     "uz": "Tranzaksiya topilmadi",
     "ru": "Транзакция не найдена",
-    "en": "Transaction not fond"
+    "en": "Transaction not found"
 }
 UNABLE_TO_PERFORM_OPERATION_MESSAGE = {
     "uz": "Ushbu amalni bajarib bo'lmaydi",
@@ -33,10 +33,10 @@ AUTH_ERROR = {
     "error": {
         "code": -32504,
         "message": {
-            "ru": "user not exists",
-            "uz": "user not exists",
-            "en": "user not exists"
+            "ru": "пользователь не существует",
+            "uz": "foydalanuvchi topilmadi",
+            "en": "user does not exist"
         },
-        "data": "user not exists"
+        "data": "user does not exist"
     }
 }
