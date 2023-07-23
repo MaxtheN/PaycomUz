@@ -152,7 +152,14 @@ class MerchantAPIView(APIView):
                     current_time = datetime.now()
                     current_time_to_string = int(round(current_time.timestamp()) * 1000)
                     obj.perform_datetime = current_time_to_string
-                    self.VALIDATE_CLASS().successfully_payment(validated_data['params'], obj)
+                    if self.VALIDATE_CLASS().successfully_payment(validated_data['params'], obj) != 200:
+                        obj.status = Transaction.FAILED
+
+                        self.reply = dict(error=dict(
+                            id=request_id,
+                            code=UNABLE_TO_PERFORM_OPERATION,
+                            message=UNABLE_TO_PERFORM_OPERATION_MESSAGE
+                        ))
 
                 self.reply = dict(result=dict(
                     transaction=str(obj.id),
